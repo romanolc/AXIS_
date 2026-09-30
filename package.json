@@ -1,0 +1,29 @@
+{
+  "name": "axis-energy-platform",
+  "version": "1.0.0",
+  "private": true,
+  "description": "AXIS industrial energy intelligence platform backend",
+  "type": "module",
+  "main": "backend/server.js",
+  "scripts": {
+    "dev": "node --watch backend/server.js",
+    "start": "node backend/server.js",
+    "db:migrate": "node scripts/migrate.js",
+    "db:seed": "node scripts/seed.js",
+    "db:setup": "npm run db:migrate && npm run db:seed",
+    "test": "node --test"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "argon2": "^0.45.1",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^5.1.0",
+    "helmet": "^8.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "pg": "^8.16.3",
+    "zod": "^3.25.76"
+  }
+}

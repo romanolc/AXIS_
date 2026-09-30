@@ -1,0 +1,43 @@
+
+
+/* ═══════════════════════════════════════
+   API INTEGRATION / SENSOR HUB / IMPACT
+═══════════════════════════════════════ */
+.sensor-hub-card, .impact-simulator { border-radius: var(--radius); padding: 22px 24px; margin-top: 16px; }
+.sensor-hub-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; margin-bottom: 16px; }
+.sensor-hub-header h3 { font-family: var(--font-display); font-size: 1.05rem; font-weight: 700; }
+.sensor-hub-header p { color: var(--text-3); font-size: .82rem; margin-top: 3px; }
+.data-state { color: var(--text-3); font-size: .75rem; padding: 5px 9px; border-radius: 99px; background: var(--surface-2); white-space: nowrap; }
+.data-state.loading { color: var(--green-dark); background: var(--green-light); }
+.data-state.success { color: #15803d; background: rgba(34,197,94,.1); }
+.data-state.error { color: var(--red); background: rgba(239,68,68,.1); }
+.sensor-table-wrap { overflow-x: auto; }
+.sensor-table { width: 100%; border-collapse: collapse; min-width: 620px; }
+.sensor-table th { color: var(--text-3); font-size: .7rem; font-weight: 700; text-transform: uppercase; letter-spacing: .07em; text-align: left; padding: 10px 8px; border-bottom: 1px solid var(--border); }
+.sensor-table td { color: var(--text-2); font-size: .82rem; padding: 12px 8px; border-bottom: 1px solid var(--border); }
+.sensor-table tr:last-child td { border-bottom: none; }
+.sensor-table td strong, .sensor-table td small { display: block; }
+.sensor-table td strong { color: var(--text); font-weight: 700; }
+.sensor-table td small { color: var(--text-3); font-size: .7rem; margin-top: 2px; }
+.sensor-status { display: inline-flex; align-items: center; gap: 6px; font-size: .72rem; font-weight: 700; }
+.sensor-status i { width: 7px; height: 7px; border-radius: 50%; background: var(--text-3); }
+.sensor-status.online { color: #15803d; }
+.sensor-status.online i { background: #22c55e; }
+.sensor-status.degraded { color: #b45309; }
+.sensor-status.degraded i { background: var(--yellow); }
+.sensor-status.offline { color: var(--red); }
+.sensor-status.offline i { background: var(--red); }
+.table-state { color: var(--text-3) !important; text-align: center; padding: 24px !important; }
+.impact-controls { display: flex; align-items: end; gap: 12px; flex-wrap: wrap; }
+.impact-controls label { display: flex; flex-direction: column; gap: 6px; color: var(--text-2); font-size: .78rem; font-weight: 600; }
+.impact-controls select { min-width: 210px; padding: 9px 12px; border: 1.5px solid var(--border); border-radius: 9px; background: var(--surface); color: var(--text); outline: none; }
+.impact-controls select:focus { border-color: var(--green-primary); }
+.impact-results { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-top: 18px; color: var(--text-3); font-size: .78rem; }
+.impact-results > div { display: flex; flex-direction: column; gap: 4px; padding: 12px; background: var(--surface-2); border-radius: 10px; }
+.impact-results strong { color: var(--text); font-family: var(--font-display); font-size: .95rem; }
+.is-loading { opacity: .65; pointer-events: none; }
+@media (max-width: 768px) {
+  .sensor-hub-card, .impact-simulator { padding: 18px; }
+  .sensor-hub-header { flex-direction: column; }
+  .impact-results { grid-template-columns: repeat(2, 1fr); }
+}
