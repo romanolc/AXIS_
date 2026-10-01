@@ -7,6 +7,7 @@ import { getMachines } from '../services/energy.service.js';
 import { requireAuth } from '../middleware/auth.js';
 import { validate } from '../middleware/validate.js';
 import { sendData } from '../utils/helpers.js';
+import { calculateCo2e } from '../services/sustainability.service.js';
 
 const router = Router();
 const configuration = z.object({
@@ -17,7 +18,12 @@ const configuration = z.object({
 });
 const scenarioSchema = z.object({ name: z.string().min(1).max(100), configuration });
 router.use(requireAuth);
-router.post('/twin/simulate', validate(configuration), async (req, res) => sendData(res, calculateTwin({ ...req.body, machines: req.body.machines || await getMachines(req.user.organizationId) })));
+router.post('/twin/simulate', validate(configuration), async (req, res) => {
+  const machines = req.body.machines || await getMachines(req.user.organizationId);
+  const result = calculateTwin({ ...req.body, machines });
+  const baseline = calculateTwin({ production: 80, hvac: 60, lighting: 100, machines });
+  return sendData(res, { ...result, environmental_impact: calculateCo2e({ referenceKwh: baseline.kwh, optimizedKwh: result.kwh }) });
+});
 router.get('/optimization', async (req, res) => sendData(res, await listOptimizationRuns(req.user.organizationId)));
 router.post('/optimization/run', validate(z.object({ scenario: configuration.partial().default({}) })), async (req, res) => sendData(res, await runOptimization({ organizationId: req.user.organizationId, scenario: req.body.scenario }), 201));
 router.get('/scenarios', async (req, res) => sendData(res, await listScenarios(req.user.organizationId)));

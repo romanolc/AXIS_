@@ -29,7 +29,21 @@ const state = {
 
 function togglePass() {
   const inp = document.getElementById('login-pass');
+  const button = document.querySelector('.eye-btn');
   inp.type = inp.type === 'password' ? 'text' : 'password';
+  const visible = inp.type === 'text';
+  if (button) { button.setAttribute('aria-pressed', String(visible)); button.setAttribute('aria-label', visible ? 'Ocultar senha' : 'Mostrar senha'); }
+}
+
+async function showRecoveryNotice(event) {
+  event.preventDefault();
+  const email = document.getElementById('login-email')?.value.trim();
+  if (!email) { showToast('Informe seu e-mail para iniciar a recuperação.'); return false; }
+  try {
+    await AxisApi.passwordRecovery(email);
+    showToast('Se o e-mail estiver cadastrado, você receberá as instruções disponíveis.');
+  } catch (error) { showToast(error.message); }
+  return false;
 }
 
 // ─── NAVIGATION ───────────────────────────────────────────
@@ -67,11 +81,14 @@ function toggleSidebar() {
   const overlay = document.getElementById('sidebar-overlay');
   const isOpen = sidebar.classList.toggle('open');
   overlay.classList.toggle('active', isOpen);
+  document.querySelector('.menu-btn')?.setAttribute('aria-expanded', String(isOpen));
 }
 
 function toggleNotifPanel() {
   const p = document.getElementById('notif-panel');
-  p.classList.toggle('hidden');
+  const isOpen = p.classList.toggle('hidden') === false;
+  document.querySelector('.notif-btn')?.setAttribute('aria-expanded', String(isOpen));
+  p.setAttribute('aria-hidden', String(!isOpen));
 }
 
 // Close notif panel on outside click

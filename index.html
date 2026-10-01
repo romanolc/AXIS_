@@ -9,16 +9,25 @@
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
 </head>
 <body class="screen-login-active">
+<a class="skip-link" href="#main-content">Ir para o conteúdo principal</a>
 
 <!-- ═══════════════════════════════════════════ LOGIN ═══ -->
-<div id="screen-login" class="screen active">
+<main id="screen-login" class="screen active" aria-labelledby="login-title">
   <div class="login-bg">
     <div class="login-orb orb1"></div>
     <div class="login-orb orb2"></div>
     <div class="login-orb orb3"></div>
     <div class="login-grid"></div>
   </div>
-  <div class="login-card glass">
+  <div class="login-shell">
+    <section class="login-story" aria-label="Visão geral do AXIS">
+      <div class="story-kicker"><span class="story-pulse"></span> Inteligência energética industrial</div>
+      <h1>Decisões melhores para uma operação mais eficiente.</h1>
+      <p>Monitore o consumo, antecipe desvios e transforme dados operacionais em impacto mensurável.</p>
+      <div class="story-signal" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+      <div class="story-metrics" aria-label="Indicadores da plataforma"><div><strong>24/7</strong><span>visibilidade operacional</span></div><div><strong>360°</strong><span>visão da planta</span></div></div>
+    </section>
+    <section class="login-card glass" aria-labelledby="login-title">
     <div class="login-logo">
       <div class="logo-icon">
         <svg viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -36,47 +45,48 @@
       <span class="logo-text">AXIS</span>
     </div>
     <div class="login-header">
-      <h1>Bem-vindo de volta</h1>
+      <h2 id="login-title">Bem-vindo de volta</h2>
       <p>Acesse sua plataforma de energia inteligente</p>
     </div>
     <div class="login-form">
       <div class="form-group" id="fg-email">
-        <label>E-mail</label>
+        <label for="login-email">E-mail corporativo</label>
         <div class="input-wrap">
           <svg viewBox="0 0 20 20" fill="none"><path d="M3 5h14l-7 7-7-7z" stroke="currentColor" stroke-width="1.5"/><rect x="3" y="5" width="14" height="10" rx="1" stroke="currentColor" stroke-width="1.5"/></svg>
-          <input type="email" id="login-email" placeholder="admin@axis.energy" autocomplete="off">
+          <input type="email" id="login-email" placeholder="nome@empresa.com" autocomplete="username" required aria-describedby="login-error">
         </div>
       </div>
       <div class="form-group" id="fg-pass">
-        <label>Senha</label>
+        <label for="login-pass">Senha</label>
         <div class="input-wrap">
           <svg viewBox="0 0 20 20" fill="none"><rect x="5" y="9" width="10" height="8" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M7 9V7a3 3 0 016 0v2" stroke="currentColor" stroke-width="1.5"/></svg>
-          <input type="password" id="login-pass" placeholder="••••••••">
-          <button class="eye-btn" onclick="togglePass()">
+          <input type="password" id="login-pass" placeholder="Digite sua senha" autocomplete="current-password" required aria-describedby="login-error">
+          <button class="eye-btn" type="button" onclick="togglePass()" aria-label="Mostrar senha" aria-pressed="false">
             <svg viewBox="0 0 20 20" fill="none"><ellipse cx="10" cy="10" rx="7" ry="5" stroke="currentColor" stroke-width="1.5"/><circle cx="10" cy="10" r="2" fill="currentColor"/></svg>
           </button>
         </div>
       </div>
       <div class="login-options">
         <label class="check-wrap">
-          <input type="checkbox" id="remember">
+          <input type="checkbox" id="remember" aria-label="Lembrar de mim neste dispositivo">
           <span class="checkmark"></span>
           Lembrar de mim
         </label>
-        <a href="#" class="forgot-link">Esqueci a senha</a>
+        <a href="#" class="forgot-link" onclick="return showRecoveryNotice(event)">Esqueci a senha</a>
       </div>
-      <div id="login-error" class="login-error hidden">
+      <div id="login-error" class="login-error hidden" role="alert" aria-live="assertive">
         <svg viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8" stroke="currentColor" stroke-width="1.5"/><path d="M10 6v5M10 14h.01" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
         E-mail ou senha incorretos.
       </div>
-      <button class="btn-primary btn-login" onclick="doLogin()">
+      <button class="btn-primary btn-login" type="button" onclick="doLogin()">
         <span id="login-btn-text">Entrar na plataforma</span>
         <div id="login-spinner" class="spinner hidden"></div>
       </button>
     </div>
-    <p class="login-hint">Acesso seguro ao ambiente AXIS</p>
+    <p class="login-hint" id="login-privacy">Seus dados são tratados de acordo com a legislação de proteção de dados aplicável.</p>
+    </section>
   </div>
-</div>
+</main>
 
 <!-- ═══════════════════════════════════════════ APP SHELL ═══ -->
 <div id="app" class="app hidden">
@@ -104,37 +114,37 @@
       <div class="status-dot online"></div>
     </div>
 
-    <nav class="sidebar-nav">
+    <nav class="sidebar-nav" aria-label="Navegação principal">
       <div class="nav-section-label">Principal</div>
-      <a class="nav-item active" data-screen="dashboard" onclick="goTo('dashboard')">
+      <a href="#dashboard" class="nav-item active" data-screen="dashboard" onclick="goTo('dashboard'); return false;">
         <svg viewBox="0 0 20 20" fill="none"><rect x="2" y="2" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="1.5"/><rect x="11" y="2" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="1.5"/><rect x="2" y="11" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="1.5"/><rect x="11" y="11" width="7" height="7" rx="1.5" stroke="currentColor" stroke-width="1.5"/></svg>
         <span>Dashboard</span>
       </a>
-      <a class="nav-item" data-screen="ai" onclick="goTo('ai')">
+      <a href="#ai" class="nav-item" data-screen="ai" onclick="goTo('ai'); return false;">
         <svg viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="7" stroke="currentColor" stroke-width="1.5"/><path d="M7 10l2 2 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M10 3v2M10 15v2M3 10h2M15 10h2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
         <span>IA Preditiva</span>
         <span class="nav-badge">3</span>
       </a>
-      <a class="nav-item" data-screen="twin" onclick="goTo('twin')">
+      <a href="#twin" class="nav-item" data-screen="twin" onclick="goTo('twin'); return false;">
         <svg viewBox="0 0 20 20" fill="none"><path d="M2 6l8-4 8 4v8l-8 4-8-4V6z" stroke="currentColor" stroke-width="1.5"/><path d="M10 2v16M2 6l8 4 8-4" stroke="currentColor" stroke-width="1.5"/></svg>
         <span>Digital Twin</span>
         <span class="nav-tag">BETA</span>
       </a>
       <div class="nav-section-label">Gestão</div>
-      <a class="nav-item" data-screen="optimize" onclick="goTo('optimize')">
+      <a href="#optimize" class="nav-item" data-screen="optimize" onclick="goTo('optimize'); return false;">
         <svg viewBox="0 0 20 20" fill="none"><path d="M10 2v4M10 14v4M2 10h4M14 10h4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><circle cx="10" cy="10" r="3" stroke="currentColor" stroke-width="1.5"/><path d="M4.93 4.93l2.83 2.83M12.24 12.24l2.83 2.83M4.93 15.07l2.83-2.83M12.24 7.76l2.83-2.83" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
         <span>Otimização</span>
       </a>
-      <a class="nav-item" data-screen="sustain" onclick="goTo('sustain')">
+      <a href="#sustain" class="nav-item" data-screen="sustain" onclick="goTo('sustain'); return false;">
         <svg viewBox="0 0 20 20" fill="none"><path d="M10 3C6 3 3 6 3 10s3 7 7 7 7-3 7-7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M14 3c0 4-2 7-4 7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M17 3h-3v3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
         <span>Sustentabilidade</span>
       </a>
       <div class="nav-section-label">Sistema</div>
-      <a class="nav-item" data-screen="access" onclick="goTo('access')">
+      <a href="#access" class="nav-item" data-screen="access" onclick="goTo('access'); return false;">
         <svg viewBox="0 0 20 20" fill="none"><circle cx="10" cy="7" r="4" stroke="currentColor" stroke-width="1.5"/><path d="M3 18c0-3.866 3.134-7 7-7s7 3.134 7 7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
         <span>Acessibilidade</span>
       </a>
-      <a class="nav-item" data-screen="settings" onclick="goTo('settings')">
+      <a href="#settings" class="nav-item" data-screen="settings" onclick="goTo('settings'); return false;">
         <svg viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="3" stroke="currentColor" stroke-width="1.5"/><path d="M10 2v2M10 16v2M2 10h2M16 10h2M4.93 4.93l1.41 1.41M13.66 13.66l1.41 1.41M4.93 15.07l1.41-1.41M13.66 6.34l1.41-1.41" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
         <span>Configurações</span>
       </a>
@@ -154,7 +164,7 @@
 
   <!-- TOPBAR MOBILE -->
   <header class="topbar">
-    <button class="menu-btn" onclick="toggleSidebar()">
+    <button class="menu-btn" type="button" onclick="toggleSidebar()" aria-label="Abrir menu de navegação" aria-expanded="false">
       <svg viewBox="0 0 20 20" fill="none"><path d="M3 5h14M3 10h14M3 15h14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
     </button>
     <div class="topbar-logo">
@@ -164,7 +174,7 @@
       <span>AXIS</span>
     </div>
     <div class="topbar-actions">
-      <button class="icon-btn notif-btn" onclick="toggleNotifPanel()">
+      <button class="icon-btn notif-btn" type="button" onclick="toggleNotifPanel()" aria-label="Abrir notificações" aria-expanded="false">
         <svg viewBox="0 0 20 20" fill="none"><path d="M10 2a6 6 0 016 6v3l2 3H2l2-3V8a6 6 0 016-6z" stroke="currentColor" stroke-width="1.5"/><path d="M8 16a2 2 0 004 0" stroke="currentColor" stroke-width="1.5"/></svg>
         <span class="notif-dot"></span>
       </button>
@@ -172,10 +182,10 @@
   </header>
 
   <!-- NOTIFICATION PANEL -->
-  <div id="notif-panel" class="notif-panel hidden">
+  <div id="notif-panel" class="notif-panel hidden" aria-hidden="true">
     <div class="notif-header">
       <h3>Notificações</h3>
-      <button onclick="toggleNotifPanel()">
+          <button type="button" onclick="toggleNotifPanel()" aria-label="Fechar notificações">
         <svg viewBox="0 0 20 20" fill="none"><path d="M15 5L5 15M5 5l10 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
       </button>
     </div>
@@ -368,13 +378,27 @@
             <h3>Central de Sensores</h3>
             <p>Leituras persistidas e status de conexão</p>
           </div>
-          <span class="data-state" id="sensor-hub-state">Conectando...</span>
+          <span class="data-state" id="sensor-hub-state" role="status" aria-live="polite">Conectando...</span>
         </div>
         <div class="sensor-table-wrap">
           <table class="sensor-table">
             <thead><tr><th>Sensor</th><th>Localização</th><th>Status</th><th>Potência</th><th>Última leitura</th></tr></thead>
             <tbody id="sensor-list"><tr><td colspan="5" class="table-state">Carregando sensores...</td></tr></tbody>
           </table>
+        </div>
+      </div>
+      <div class="axis-indicators-row">
+        <div class="indicator-card glass" id="energy-intensity-card">
+          <div class="indicator-kicker">ODS 7 · META 7.3</div><h3>Intensidade energética</h3>
+          <div class="indicator-value" id="dashboard-energy-intensity">—</div>
+          <p id="dashboard-energy-intensity-note">Energia consumida / unidade produzida</p>
+          <span class="data-state" id="dashboard-intensity-state">Aguardando dados de produção</span>
+        </div>
+        <div class="indicator-card glass">
+          <div class="indicator-kicker">ODS 9 · INFRAESTRUTURA</div><h3>Ativos monitorados</h3>
+          <div class="indicator-value" id="dashboard-assets-monitored">—</div>
+          <p>Percentual de sensores online na organização</p>
+          <span class="data-state success">Indicador operacional</span>
         </div>
       </div>
     </div>
@@ -591,6 +615,11 @@
             <div class="twin-big-val" id="twin-cost">R$ 92,40</div>
             <div class="twin-delta" id="twin-cost-delta">Base atual</div>
           </div>
+          <div class="twin-metric-card glass twin-environmental-metric">
+            <h4>CO2e evitado estimado</h4>
+            <div class="twin-big-val" id="twin-co2e-avoided">—</div>
+            <div class="twin-delta" id="twin-co2e-delta">Fator não configurado</div>
+          </div>
           <div class="twin-scenario glass">
             <h4>Cenário</h4>
             <div class="scenario-btns">
@@ -704,6 +733,9 @@
           <label>Cenário
             <select id="impact-scenario">
               <option value="otimizado">Otimizado</option>
+              <option value="conservador">Cenário conservador · 5% · hipótese</option>
+              <option value="referencia">Cenário de referência · 15% · hipótese</option>
+              <option value="potencial">Cenário potencial · 30% · hipótese</option>
               <option value="maximo">Economia máxima</option>
               <option value="ponta">Horário de ponta</option>
               <option value="fora-ponta">Fora de ponta</option>
@@ -722,7 +754,7 @@
           <h2 class="page-title">Sustentabilidade</h2>
           <p class="page-sub">Monitoramento ESG e carbono</p>
         </div>
-        <div class="esg-badge">ESG Compliant</div>
+        <div class="esg-badge">Dados estimados</div>
       </div>
 
       <div class="sustain-layout">
@@ -752,8 +784,18 @@
           </div>
         </div>
 
+        <div class="environmental-impact-card glass" id="environmental-impact-card">
+          <div class="impact-card-kicker">🌱 IMPACTO AMBIENTAL</div>
+          <div class="impact-card-heading"><h3>Redução estimada de CO2e</h3><span class="impact-data-status" id="sustain-data-status">SIMULADO</span></div>
+          <div class="co2e-value" id="sustain-co2e-value">—</div>
+          <div class="co2e-unit" id="sustain-co2e-unit">Fator de emissão não configurado</div>
+          <div class="co2e-trend" id="sustain-co2e-trend">Resultado ambiental aguardando fator oficial.</div>
+          <a class="source-link" href="https://www.gov.br/mcti/pt-br/acompanhe-o-mcti/cgcl/paginas/metodo-da-analise-de-despacho" target="_blank" rel="noopener">Fonte do fator: MCTI/SIRENE — SIN ↗</a>
+          <div class="impact-card-actions"><button class="btn-save-settings" type="button" onclick="toggleImpactCalculation()">Ver cálculo</button><button class="btn-download" type="button" onclick="downloadSustainabilityPdf('goals')">Baixar PDF ESG</button></div>
+        </div>
+
         <div class="esg-goals glass">
-          <h3>Metas ESG 2025</h3>
+          <div class="sustain-card-heading"><h3>Metas ESG 2025</h3><button class="btn-download" type="button" onclick="downloadSustainabilityPdf('goals')">Baixar PDF</button></div>
           <div class="esg-goal-list">
             <div class="esg-goal">
               <div class="esg-goal-header">
@@ -800,24 +842,51 @@
         </div>
 
         <div class="certifications glass">
-          <h3>Certificações & Relatórios</h3>
+          <div class="sustain-card-heading"><h3>Certificações & Relatórios</h3><button class="btn-download" type="button" onclick="downloadSustainabilityPdf('institutional')">Baixar relatório</button></div>
           <div class="cert-list">
-            <div class="cert-item active">
+            <div class="cert-item pending">
               <div class="cert-icon">🏆</div>
-              <div><strong>ISO 50001</strong><span>Gestão de Energia – Válida</span></div>
-              <div class="cert-status green-badge">Ativo</div>
+              <div><strong>ISO 50001</strong><span>Documentação não fornecida ao AXIS</span></div>
+              <div class="cert-status yellow-badge">Não informado</div>
             </div>
-            <div class="cert-item active">
+            <div class="cert-item pending">
               <div class="cert-icon">📋</div>
-              <div><strong>GRI Standards</strong><span>Relatório 2024 publicado</span></div>
-              <div class="cert-status green-badge">Ativo</div>
+              <div><strong>GRI Standards</strong><span>Referência de relatório não anexada</span></div>
+              <div class="cert-status yellow-badge">Não informado</div>
             </div>
             <div class="cert-item pending">
               <div class="cert-icon">⏳</div>
-              <div><strong>Science Based Targets</strong><span>Em análise</span></div>
-              <div class="cert-status yellow-badge">Pendente</div>
+              <div><strong>Science Based Targets</strong><span>Preparado para integração documental</span></div>
+              <div class="cert-status yellow-badge">Preparado</div>
             </div>
           </div>
+        </div>
+      </div>
+      <div class="impact-calculation glass hidden" id="impact-calculation" aria-live="polite">
+        <div class="sustain-card-heading"><h3>Como calculamos?</h3><span class="formula-label">Estimativa operacional</span></div>
+        <div class="calculation-flow"><div><span>Consumo de referência</span><strong id="calc-reference">—</strong></div><b>↓</b><div><span>Consumo otimizado</span><strong id="calc-optimized">—</strong></div><b>↓</b><div><span>Energia economizada</span><strong id="calc-saved">—</strong></div><b>↓</b><div><span>Fator de emissão</span><strong id="calc-factor">Não configurado</strong></div><b>↓</b><div><span>CO2e estimado</span><strong id="calc-co2e">—</strong></div></div>
+        <p class="calculation-formula">CO2e evitado = Energia economizada (MWh) × fator de emissão (tCO2e/MWh)</p>
+        <p class="calculation-note" id="calc-note">O cálculo só apresenta CO2e quando o fator oficial está configurado com fonte, período, unidade e data de referência.</p>
+      </div>
+      <div class="external-context-grid">
+        <div class="external-context-card glass">
+          <div class="indicator-kicker">DADO REAL · EPE 2025</div><h3>Escala da indústria brasileira</h3>
+          <div class="external-big-value" id="national-consumption">199,3 TWh</div>
+          <p>Consumo de eletricidade da indústria brasileira em 2025.</p>
+          <div class="national-simulation" id="national-simulation">Se 1% fosse evitado: ≈ 1,99 TWh</div>
+          <a class="source-link" id="epe-source-link" href="https://dashboard.epe.gov.br/apps/anuario-livro/livro/pt/destaques.html" target="_blank" rel="noopener">Fonte: EPE — Anuário 2026 ↗</a>
+        </div>
+        <div class="external-context-card glass">
+          <div class="indicator-kicker">REFERÊNCIAS EXTERNAS</div><h3>Eficiência e contexto</h3>
+          <div class="reference-list" id="external-reference-list">
+            <div><strong>7% até 2034</strong><span>potencial externo de eficiência · MME/PDE 2034</span></div>
+            <div><strong>R$ 10 bi</strong><span>potencial nacional estimado · MME/PotencializEE</span></div>
+            <div><strong>4,5 MtCO2e</strong><span>cenários nacionais até 2050 · MME</span></div>
+            <div><strong>35,2%</strong><span>participação industrial no consumo nacional · EPE</span></div>
+          </div>
+          <p class="external-context-note">Referências externas; não são resultados, metas ou previsões do AXIS.</p>
+          <a class="source-link" href="https://www.gov.br/mme/pt-br/assuntos/noticias/pde-2034-revela-que-ganhos-em-eficiencia-energetica-podem-reduzir-consumo-de-energia-no-brasil-em-7-ate-2034" target="_blank" rel="noopener">Fontes: MME / PDE 2034 ↗</a>
+          <a class="source-link" href="https://www.ibge.gov.br/estatisticas/economicas/industria/9042-pesquisa-industrial-anual.html" target="_blank" rel="noopener">Contexto de mercado: IBGE / PIA-Empresa ↗</a>
         </div>
       </div>
     </div>
@@ -840,7 +909,7 @@
               <p>Aumenta o contraste para melhor leitura</p>
             </div>
             <label class="toggle-switch">
-              <input type="checkbox" id="toggle-contrast" onchange="toggleContrast()">
+              <input type="checkbox" id="toggle-contrast" aria-label="Ativar alto contraste" onchange="toggleContrast()">
               <span class="toggle-track"></span>
             </label>
           </div>
@@ -854,7 +923,7 @@
               <p>Aumenta o tamanho de todo o texto</p>
             </div>
             <label class="toggle-switch">
-              <input type="checkbox" id="toggle-font" onchange="toggleLargeFont()">
+              <input type="checkbox" id="toggle-font" aria-label="Ativar fonte grande" onchange="toggleLargeFont()">
               <span class="toggle-track"></span>
             </label>
           </div>
@@ -868,7 +937,7 @@
               <p>Exibe apenas informações essenciais</p>
             </div>
             <label class="toggle-switch">
-              <input type="checkbox" id="toggle-simple" onchange="toggleSimple()">
+              <input type="checkbox" id="toggle-simple" aria-label="Ativar modo simplificado" onchange="toggleSimple()">
               <span class="toggle-track"></span>
             </label>
           </div>
@@ -883,7 +952,7 @@
             </div>
           </div>
           <div class="voice-controls">
-            <button class="btn-voice" id="btn-voice" onclick="toggleVoice()">
+            <button class="btn-voice" id="btn-voice" type="button" onclick="toggleVoice()" aria-label="Iniciar ou pausar leitura por voz">
               <svg viewBox="0 0 24 24" fill="none"><path d="M12 2a4 4 0 014 4v6a4 4 0 01-8 0V6a4 4 0 014-4z" stroke="currentColor" stroke-width="1.5"/><path d="M8 12a4 4 0 008 0M12 16v4M8 20h8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
               Iniciar leitura
             </button>
@@ -896,6 +965,18 @@
           </div>
         </div>
 
+        <div class="access-card glass libras-card">
+          <div class="access-card-header">
+            <div class="access-icon-wrap">🤟</div>
+            <div>
+              <h3>VLibras</h3>
+              <p>Ative o intérprete oficial para traduzir conteúdos selecionados para Libras.</p>
+            </div>
+          </div>
+          <button class="btn-libras" type="button" onclick="openVlibras()" aria-label="Abrir intérprete VLibras">Abrir intérprete</button>
+          <small class="access-note" id="vlibras-status" role="status" aria-live="polite">Serviço externo carregado sob demanda.</small>
+        </div>
+
         <div class="access-card glass">
           <div class="access-card-header">
             <div class="access-icon-wrap">🎨</div>
@@ -904,7 +985,7 @@
               <p>Desativa animações e transições</p>
             </div>
             <label class="toggle-switch">
-              <input type="checkbox" id="toggle-motion" onchange="toggleMotion()">
+              <input type="checkbox" id="toggle-motion" aria-label="Reduzir movimento e animações" onchange="toggleMotion()">
               <span class="toggle-track"></span>
             </label>
           </div>
@@ -1068,24 +1149,24 @@
   </main>
 
   <!-- BOTTOM NAV MOBILE -->
-  <nav class="bottom-nav">
-    <a class="bn-item active" data-screen="dashboard" onclick="goTo('dashboard')">
+  <nav class="bottom-nav" aria-label="Navegação móvel">
+    <a href="#dashboard" class="bn-item active" data-screen="dashboard" onclick="goTo('dashboard'); return false;">
       <svg viewBox="0 0 20 20" fill="none"><rect x="2" y="2" width="7" height="7" rx="1" stroke="currentColor" stroke-width="1.5"/><rect x="11" y="2" width="7" height="7" rx="1" stroke="currentColor" stroke-width="1.5"/><rect x="2" y="11" width="7" height="7" rx="1" stroke="currentColor" stroke-width="1.5"/><rect x="11" y="11" width="7" height="7" rx="1" stroke="currentColor" stroke-width="1.5"/></svg>
       <span>Início</span>
     </a>
-    <a class="bn-item" data-screen="ai" onclick="goTo('ai')">
+    <a href="#ai" class="bn-item" data-screen="ai" onclick="goTo('ai'); return false;">
       <svg viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="7" stroke="currentColor" stroke-width="1.5"/><path d="M7 10l2 2 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
       <span>IA</span>
     </a>
-    <a class="bn-item" data-screen="twin" onclick="goTo('twin')">
+    <a href="#twin" class="bn-item" data-screen="twin" onclick="goTo('twin'); return false;">
       <svg viewBox="0 0 20 20" fill="none"><path d="M2 6l8-4 8 4v8l-8 4-8-4V6z" stroke="currentColor" stroke-width="1.5"/></svg>
       <span>Twin</span>
     </a>
-    <a class="bn-item" data-screen="sustain" onclick="goTo('sustain')">
+    <a href="#sustain" class="bn-item" data-screen="sustain" onclick="goTo('sustain'); return false;">
       <svg viewBox="0 0 20 20" fill="none"><path d="M10 3C6 3 3 6 3 10s3 7 7 7 7-3 7-7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
       <span>ESG</span>
     </a>
-    <a class="bn-item" data-screen="settings" onclick="goTo('settings')">
+    <a href="#settings" class="bn-item" data-screen="settings" onclick="goTo('settings'); return false;">
       <svg viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="3" stroke="currentColor" stroke-width="1.5"/><path d="M10 2v2M10 16v2M2 10h2M16 10h2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
       <span>Config</span>
     </a>
@@ -1094,9 +1175,11 @@
 
 <!-- TOAST -->
 <div id="toast" class="toast hidden"></div>
+<button class="vlibras-launcher" type="button" onclick="openVlibras()" aria-label="Abrir intérprete VLibras"><span aria-hidden="true">🤟</span><span>Libras</span></button>
 
 <script src="frontend/js/api.js"></script>
 <script src="script.js"></script>
 <script src="frontend/js/integration.js"></script>
+<script src="https://vlibras.gov.br/app/vlibras-plugin.js" defer></script>
 </body>
 </html>

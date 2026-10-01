@@ -105,7 +105,11 @@ O seed grava somente um hash Argon2id da conta inicial. Substitua ou desabilite 
 | GET/POST | `/api/optimization`, `/api/optimization/run` | Sim | Histórico e execução de otimização |
 | GET/PATCH | `/api/user/profile` | Sim | Perfil |
 | GET/PATCH | `/api/user/preferences` | Sim | Preferências |
-| GET | `/api/sustainability` | Sim | Indicadores ESG demonstrativos |
+| GET | `/api/sustainability` | Sim | Indicadores ESG, cálculo CO2e e metodologia |
+| GET | `/api/sustainability/reference-data` | Sim | Dados externos oficiais e cenários hipotéticos |
+| POST | `/api/sustainability/efficiency-simulation` | Sim | Simulação de redução percentual, economia e CO2e |
+| GET | `/api/sustainability/reports/goals.pdf` | Sim | PDF de Metas ESG 2025 |
+| GET | `/api/sustainability/reports/institutional.pdf` | Sim | PDF institucional de indicadores |
 
 ## Segurança
 
@@ -119,6 +123,14 @@ O seed grava somente um hash Argon2id da conta inicial. Substitua ou desabilite 
 - `SUPABASE_SERVICE_ROLE_KEY` e credenciais OAuth devem permanecer somente no ambiente do servidor.
 - CORS é controlado por `CORS_ORIGIN`.
 
+## Privacidade, acessibilidade e Libras
+
+O login usa o endpoint real `/api/auth/login`, Argon2id no backend e JWT na sessão atual do frontend. A senha e o hash não são enviados nas respostas. A tela de login informa que os dados são tratados de acordo com a legislação de proteção de dados aplicável, sem declarar certificações ou políticas jurídicas específicas.
+
+O AXIS mantém controles de alto contraste, fonte grande, modo simplificado, redução de movimento e leitura por voz. O render de sensores constrói o DOM com `textContent`, sem interpolar valores vindos da API diretamente em HTML. A navegação principal possui landmarks, foco visível, skip link e controles nomeados para leitores de tela.
+
+O botão de Libras usa o widget oficial do VLibras (`https://vlibras.gov.br/app/vlibras-plugin.js`). O serviço é externo e depende de conectividade; quando não carrega, o AXIS informa a indisponibilidade sem simular tradução. O widget não substitui intérprete humano e sua disponibilidade deve ser validada conforme a política de rede e privacidade da implantação.
+
 ## Variáveis de ambiente
 
 Consulte `.env.example`:
@@ -129,6 +141,30 @@ Consulte `.env.example`:
 - `DEMO_MODE`, `SENSOR_SIMULATOR_ENABLED`;
 - `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, `GOOGLE_REDIRECT_URI`, `GOOGLE_ALLOWED_DOMAIN`;
 - variáveis opcionais do Supabase.
+- `EMISSION_FACTOR_VALUE`, `EMISSION_FACTOR_UNIT`, `EMISSION_FACTOR_PERIOD`, `EMISSION_FACTOR_SOURCE`, `EMISSION_FACTOR_METHODOLOGY`, `EMISSION_FACTOR_REFERENCE_DATE`.
+
+O fator de emissão não possui valor padrão inventado. A aplicação prioriza a referência oficial do MCTI/SIRENE, mas exige que o valor, período, fonte, metodologia e data de referência sejam informados no ambiente antes de calcular CO2e.
+
+## Referências e transparência
+
+O AXIS apresenta dados externos como **DADO REAL** ou **CONTEXTO DE MERCADO**, sem tratá-los como resultados da plataforma:
+
+- EPE — consumo industrial de 199.341 GWh (199,341 TWh) em 2025 e participação de 35,2% no consumo nacional: [Anuário Estatístico de Energia Elétrica 2026](https://dashboard.epe.gov.br/apps/anuario-livro/livro/pt/destaques.html).
+- MME — potencial externo de eficiência de 7% até 2034: [PDE 2034](https://www.gov.br/mme/pt-br/assuntos/noticias/pde-2034-revela-que-ganhos-em-eficiencia-energetica-podem-reduzir-consumo-de-energia-no-brasil-em-7-ate-2034).
+- MME — estudos nacionais com potencial estimado de R$ 10 bilhões e 4,5 milhões de tCO2e até 2050: [PotencializEE](https://www.gov.br/mme/pt-br/assuntos/noticias/novas-politicas-publicas-para-eficiencia-energetica-industrial-podem-gerar-economia-de-r-10-bi-e-a-reducao-de-cerca-de-4-5-mtco2e-ate-2050).
+- IBGE — contexto de mercado: [PIA-Empresa](https://www.ibge.gov.br/estatisticas/economicas/industria/9042-pesquisa-industrial-anual.html).
+- MCTI/SIRENE — fator de emissão do SIN: [método da análise de despacho](https://www.gov.br/mcti/pt-br/acompanhe-o-mcti/cgcl/paginas/metodo-da-analise-de-despacho).
+
+Fórmulas utilizadas:
+
+```text
+Intensidade energética = energia consumida / unidade produzida
+Energia economizada = consumo anual × redução percentual
+Economia financeira estimada = energia economizada × tarifa energética
+CO2e evitado = energia economizada (MWh) × fator de emissão (tCO2e/MWh)
+```
+
+Os cenários de 5%, 15% e 30% são **hipóteses de simulação**. A simulação nacional de 1% resulta de um dado real da EPE, mas não é uma previsão ou resultado do AXIS. A intensidade energética permanece indisponível quando unidades produzidas não estão cadastradas.
 
 ## Testes
 
@@ -146,9 +182,12 @@ A validação de integração usada na auditoria cobre:
 - Digital Twin;
 - otimização e registro;
 - Impact Simulator;
+- cálculo conhecido de MWh para tCO2e, cenário sem economia e fator não configurado;
+- geração, assinatura e conteúdo dos PDFs ESG e institucional;
 - rotas sem autenticação;
 - token inválido;
 - DEMO_MODE sem PostgreSQL;
 - contratos do frontend servidos pelo Express.
+- referências EPE/MME/IBGE/MCTI, ODS 7/9, intensidade indisponível sem produção e simulação de eficiência.
 
 Para PostgreSQL, execute `npm run db:setup` em um banco disponível e repita os fluxos autenticados. Sem um servidor PostgreSQL configurado, essa parte permanece validada por schema, seed e consultas parametrizadas, não por execução de banco nesta máquina.

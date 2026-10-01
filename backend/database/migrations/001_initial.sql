@@ -31,8 +31,15 @@ CREATE TABLE IF NOT EXISTS optimization_runs (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(), organization_id UUID NOT NULL REFERENCES organizations(id) ON DELETE CASCADE,
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(), before_kwh NUMERIC(12,3) NOT NULL, after_kwh NUMERIC(12,3) NOT NULL,
   before_co2 NUMERIC(12,3) NOT NULL, after_co2 NUMERIC(12,3) NOT NULL, before_cost NUMERIC(12,3) NOT NULL,
-  after_cost NUMERIC(12,3) NOT NULL, estimated_savings NUMERIC(12,3) NOT NULL, scenario JSONB NOT NULL DEFAULT '{}'::jsonb
+  after_cost NUMERIC(12,3) NOT NULL, estimated_savings NUMERIC(12,3) NOT NULL, scenario JSONB NOT NULL DEFAULT '{}'::jsonb,
+  energy_saved_kwh NUMERIC(12,3), energy_saved_mwh NUMERIC(12,6), co2e_avoided_tonnes NUMERIC(12,6),
+  emission_factor JSONB, co2e_status TEXT NOT NULL DEFAULT 'factor_not_configured'
 );
+ALTER TABLE optimization_runs ADD COLUMN IF NOT EXISTS energy_saved_kwh NUMERIC(12,3);
+ALTER TABLE optimization_runs ADD COLUMN IF NOT EXISTS energy_saved_mwh NUMERIC(12,6);
+ALTER TABLE optimization_runs ADD COLUMN IF NOT EXISTS co2e_avoided_tonnes NUMERIC(12,6);
+ALTER TABLE optimization_runs ADD COLUMN IF NOT EXISTS emission_factor JSONB;
+ALTER TABLE optimization_runs ADD COLUMN IF NOT EXISTS co2e_status TEXT NOT NULL DEFAULT 'factor_not_configured';
 CREATE TABLE IF NOT EXISTS recommendations (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(), organization_id UUID NOT NULL REFERENCES organizations(id) ON DELETE CASCADE,
   title TEXT NOT NULL, description TEXT NOT NULL, priority TEXT NOT NULL CHECK (priority IN ('LOW','MEDIUM','HIGH','CRITICAL')),
